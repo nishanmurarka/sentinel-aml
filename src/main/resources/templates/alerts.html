@@ -20,6 +20,7 @@
                         <th>Risk Score</th>
                         <th>Description</th>
                         <th>Status</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -34,6 +35,9 @@
                         </td>
                         <td th:text="${alert.description}">Description</td>
                         <td th:text="${alert.status}">Status</td>
+                        <td>
+                            <a th:href="@{/alerts/{id}/sar(id=${alert.id})}" style="color: var(--primary); font-weight: 600; text-decoration: none;">Draft SAR</a>
+                        </td>
                     </tr>
                 </tbody>
             </table>

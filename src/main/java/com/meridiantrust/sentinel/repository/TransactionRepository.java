@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -23,6 +24,10 @@ public class TransactionRepository {
                 .filter(t -> t.accountId().equals(accountId))
                 .sorted((t1, t2) -> t1.timestamp().compareTo(t2.timestamp()))
                 .collect(Collectors.toList());
+    }
+
+    public Optional<Transaction> findById(String id) {
+        return Optional.ofNullable(transactions.get(id));
     }
     
     public List<Transaction> findAll() {

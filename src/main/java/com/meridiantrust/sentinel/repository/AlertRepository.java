@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Collectors;
@@ -20,6 +21,10 @@ public class AlertRepository {
 
     public List<Alert> findAll() {
         return new ArrayList<>(alerts);
+    }
+    
+    public Optional<Alert> findById(String id) {
+        return alerts.stream().filter(a -> a.id().equals(id)).findFirst();
     }
     
     public List<Alert> findByCustomerId(String customerId) {
