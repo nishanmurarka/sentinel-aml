@@ -85,8 +85,10 @@ public class DashboardController {
             int count = 0;
             while ((line = reader.readNext()) != null) {
                 if (line.length >= 8) {
+                    // Append a short random string to the ID so repeated uploads of the same CSV don't just overwrite the same IDs in the HashMap
+                    String uniqueId = line[0] + "-" + java.util.UUID.randomUUID().toString().substring(0, 6);
                     Transaction tx = new Transaction(
-                            line[0], line[1], new BigDecimal(line[2]), line[3],
+                            uniqueId, line[1], new BigDecimal(line[2]), line[3],
                             line[4], null, line[5], LocalDateTime.parse(line[6]), line[7], "OUTBOUND"
                     );
                     transactionProducer.sendTransaction(tx);
@@ -94,6 +96,11 @@ public class DashboardController {
                 }
             }
             redirectAttributes.addFlashAttribute("message", "Successfully ingested " + count + " transactions.");
+            
+            // Give Kafka consumer a brief moment to process the messages before the dashboard reloads
+            // This prevents the "count is wrong until I refresh" issue caused by eventual consistency!
+            Thread.sleep(800);
+            
         } catch (Exception e) {
             log.error("Failed to process transactions CSV via UI", e);
             redirectAttributes.addFlashAttribute("error", "Failed to process CSV: " + e.getMessage());

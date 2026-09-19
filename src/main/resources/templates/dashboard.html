@@ -35,7 +35,7 @@
             <h2>Upload Transactions</h2>
             <p style="color: #94a3b8; margin-bottom: 1rem; font-size: 0.875rem;">Upload a CSV file of transactions to simulate real-time ingestion.</p>
             <form method="POST" action="/upload-transactions" enctype="multipart/form-data" style="display: flex; gap: 1rem; align-items: center;">
-                <input type="file" name="file" accept=".csv" required style="padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 4px; background: #0f172a; color: var(--text-color);">
+                <input type="file" name="file" accept=".csv" required style="padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 4px; background: var(--card-bg); color: var(--text-color);">
                 <button type="submit" style="background-color: var(--primary); color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; font-weight: 600; cursor: pointer;">Upload & Stream</button>
             </form>
         </div>
