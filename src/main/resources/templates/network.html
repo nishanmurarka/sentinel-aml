@@ -40,7 +40,7 @@
         let network = null;
 
         function fetchNetworkData() {
-            fetch('/api/network/data')
+            fetch('/api/v1/network/data')
                 .then(response => response.json())
                 .then(data => {
                     drawNetwork(data.nodes, data.edges);

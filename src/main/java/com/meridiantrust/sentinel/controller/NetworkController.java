@@ -28,7 +28,7 @@ public class NetworkController {
         return "network";
     }
 
-    @GetMapping("/api/network/data")
+    @GetMapping("/api/v1/network/data")
     @ResponseBody
     public GraphData getNetworkData() {
         List<Transaction> transactions = transactionRepository.findAll();
