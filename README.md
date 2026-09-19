@@ -83,3 +83,22 @@ The platform is built with several powerful extensions for both technical and bu
 - **Swagger / OpenAPI Documentation:** The application integrates `springdoc-openapi` for automatic API documentation. When the application is running, you can explore and test the REST endpoints via the Swagger UI available at `http://localhost:8080/swagger-ui/index.html`.
 - **Network Graph Visualization (Planned):** A visual network graph feature is in the roadmap. This will allow compliance analysts to view linked accounts, transaction flows, and identify complex laundering schemes such as layering rings or shell company networks.
 - **Automated SAR Generation (Planned):** An upcoming feature that will automatically generate Suspicious Activity Report (SAR) drafts. It will summarize alert evidence in a narrative form ready for FIU/regulatory filing, saving analysts significant time.
+
+## Screenshots
+
+Below are some screenshots of the Sentinel AML application in action:
+
+### Dashboard Overview
+![Dashboard Overview](docs/images/dashboard.png)
+
+### Account Transaction Network
+![Account Transaction Network](docs/images/network_graph.png)
+
+### Suspicious Activity Report (SAR) Draft
+![Suspicious Activity Report Draft](docs/images/sar_draft.png)
+
+### Recent Alerts
+![Recent Alerts](docs/images/recent_alerts.png)
+
+### All Alerts Queue
+![All Alerts Queue](docs/images/all_alerts.png)
