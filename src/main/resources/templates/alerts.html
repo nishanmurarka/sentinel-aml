@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{base :: head('Alerts - Sentinel')}"></head>
+<body>
+    <div th:replace="~{base :: navbar}"></div>
+    
+    <div class="container">
+        <h1>All Alerts</h1>
+        <p style="color: #94a3b8; margin-bottom: 2rem;">Showing all generated alerts, sorted by risk score descending.</p>
+        
+        <div class="card">
+            <div th:if="${#lists.isEmpty(alerts)}">No alerts found.</div>
+            <table th:unless="${#lists.isEmpty(alerts)}">
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Alert ID</th>
+                        <th>Account ID</th>
+                        <th>Rule Triggered</th>
+                        <th>Risk Score</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="alert : ${alerts}">
+                        <td th:text="${#temporals.format(alert.timestamp, 'yyyy-MM-dd HH:mm:ss')}">Time</td>
+                        <td th:text="${#strings.substring(alert.id, 0, 8)}">ID</td>
+                        <td th:text="${alert.accountId}">Account</td>
+                        <td th:text="${alert.triggeredRuleName}">Rule</td>
+                        <td>
+                            <span th:class="${alert.riskScore >= 80 ? 'badge-danger' : 'badge-warning'}"
+                                  th:text="${alert.riskScore}">Score</span>
+                        </td>
+                        <td th:text="${alert.description}">Description</td>
+                        <td th:text="${alert.status}">Status</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{base :: head('Dashboard - Sentinel')}"></head>
+<body>
+    <div th:replace="~{base :: navbar}"></div>
+    
+    <div class="container">
+        <h1 style="margin-bottom: 2rem;">Overview</h1>
+
+        <!-- Flash messages -->
+        <div th:if="${message}" style="background-color: rgba(16, 185, 129, 0.2); color: #10b981; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem;" th:text="${message}"></div>
+        <div th:if="${error}" style="background-color: rgba(239, 68, 68, 0.2); color: #ef4444; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem;" th:text="${error}"></div>
+        
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-bottom: 2rem;">
+            <div class="card">
+                <div style="color: #94a3b8; font-size: 0.875rem;">Total Alerts</div>
+                <div style="font-size: 2rem; font-weight: 700; margin-top: 0.5rem;" th:text="${totalAlerts}">0</div>
+            </div>
+            <div class="card" style="border-left: 4px solid var(--danger);">
+                <div style="color: #94a3b8; font-size: 0.875rem;">High Risk Alerts</div>
+                <div style="font-size: 2rem; font-weight: 700; margin-top: 0.5rem; color: var(--danger);" th:text="${highRiskAlerts}">0</div>
+            </div>
+            <div class="card">
+                <div style="color: #94a3b8; font-size: 0.875rem;">Transactions Processed</div>
+                <div style="font-size: 2rem; font-weight: 700; margin-top: 0.5rem;" th:text="${totalTransactions}">0</div>
+            </div>
+            <div class="card">
+                <div style="color: #94a3b8; font-size: 0.875rem;">Monitored Customers</div>
+                <div style="font-size: 2rem; font-weight: 700; margin-top: 0.5rem;" th:text="${totalCustomers}">0</div>
+            </div>
+        </div>
+
+        <!-- Upload CSV Form -->
+        <div class="card" style="margin-bottom: 2rem;">
+            <h2>Upload Transactions</h2>
+            <p style="color: #94a3b8; margin-bottom: 1rem; font-size: 0.875rem;">Upload a CSV file of transactions to simulate real-time ingestion.</p>
+            <form method="POST" action="/upload-transactions" enctype="multipart/form-data" style="display: flex; gap: 1rem; align-items: center;">
+                <input type="file" name="file" accept=".csv" required style="padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 4px; background: #0f172a; color: var(--text-color);">
+                <button type="submit" style="background-color: var(--primary); color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; font-weight: 600; cursor: pointer;">Upload & Stream</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h2>Recent Alerts</h2>
+            <div th:if="${#lists.isEmpty(recentAlerts)}">No alerts generated yet.</div>
+            <table th:unless="${#lists.isEmpty(recentAlerts)}">
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Account ID</th>
+                        <th>Rule Triggered</th>
+                        <th>Risk Score</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="alert : ${recentAlerts}">
+                        <td th:text="${#temporals.format(alert.timestamp, 'yyyy-MM-dd HH:mm:ss')}">Time</td>
+                        <td th:text="${alert.accountId}">Account</td>
+                        <td th:text="${alert.triggeredRuleName}">Rule</td>
+                        <td>
+                            <span th:class="${alert.riskScore >= 80 ? 'badge-danger' : 'badge-warning'}"
+                                  th:text="${alert.riskScore}">Score</span>
+                        </td>
+                        <td th:text="${alert.status}">Status</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

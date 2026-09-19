@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{base :: head('Accounts - Sentinel')}"></head>
+<body>
+    <div th:replace="~{base :: navbar}"></div>
+    
+    <div class="container">
+        <h1>Accounts</h1>
+        <p style="color: #94a3b8; margin-bottom: 2rem;">Showing all monitored accounts.</p>
+        
+        <div class="card">
+            <div th:if="${#lists.isEmpty(accounts)}">No accounts found.</div>
+            <table th:unless="${#lists.isEmpty(accounts)}">
+                <thead>
+                    <tr>
+                        <th>Account ID</th>
+                        <th>Customer ID</th>
+                        <th>Type</th>
+                        <th>Currency</th>
+                        <th>Opening Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="account : ${accounts}">
+                        <td th:text="${account.id()}">ID</td>
+                        <td th:text="${account.customerId()}">Customer ID</td>
+                        <td th:text="${account.accountType()}">Type</td>
+                        <td th:text="${account.currency()}">Currency</td>
+                        <td th:text="${account.openingDate()}">Date</td>
+                        <td th:text="${account.status()}">Status</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
