@@ -34,7 +34,7 @@ public class StructuringRule implements DetectionRule {
     public Optional<Alert> evaluate(Transaction transaction) {
         if (isWithinBounds(transaction.amount())) {
             LocalDateTime cutoff = transaction.timestamp().minusHours(24);
-            List<Transaction> recentTransactions = transactionRepository.findByAccountId(transaction.accountId()).stream()
+            List<Transaction> recentTransactions = transactionRepository.findByAccountIdOrderByTimestampAsc(transaction.accountId()).stream()
                     .filter(t -> t.timestamp().isAfter(cutoff) && t.timestamp().isBefore(transaction.timestamp().plusSeconds(1)))
                     .filter(t -> isWithinBounds(t.amount()))
                     .collect(Collectors.toList());

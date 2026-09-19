@@ -9,9 +9,11 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.mockito.Mockito.*;
 
 public class DetectionRulesTest {
 
@@ -19,7 +21,7 @@ public class DetectionRulesTest {
 
     @BeforeEach
     void setUp() {
-        transactionRepository = new TransactionRepository();
+        transactionRepository = mock(TransactionRepository.class);
     }
 
     @Test
@@ -69,18 +71,12 @@ public class DetectionRulesTest {
         // Current transaction (between 9000 and 9999)
         Transaction currentTx = new Transaction("TX3", "ACC1", new BigDecimal("9500"), "USD", "CP1", null, "WIRE", now, "US", "OUTBOUND");
         
-        transactionRepository.save(currentTx); // Must save current transaction for the rule to find it!
-        
         // Mock history: Two previous transactions today between 9000 and 9999
         Transaction pastTx1 = new Transaction("TX1", "ACC1", new BigDecimal("9200"), "USD", "CP1", null, "WIRE", now.minusHours(1), "US", "OUTBOUND");
         Transaction pastTx2 = new Transaction("TX2", "ACC1", new BigDecimal("9600"), "USD", "CP1", null, "WIRE", now.minusHours(2), "US", "OUTBOUND");
         
-        transactionRepository.save(pastTx1);
-        transactionRepository.save(pastTx2);
-        // We also need to save the currentTx because the StructuringRule counts `recentTransactions.size() >= 3` from the repository!
-        transactionRepository.save(currentTx);
-
-
+        when(transactionRepository.findByAccountIdOrderByTimestampAsc("ACC1"))
+                .thenReturn(List.of(pastTx1, pastTx2, currentTx));
 
         Optional<Alert> alert = rule.evaluate(currentTx);
         assertTrue(alert.isPresent(), "Alert should be present but was empty!");
@@ -97,7 +93,8 @@ public class DetectionRulesTest {
         // Mock history: Inbound deposit of 5000 yesterday
         Transaction inboundTx = new Transaction("TX1", "ACC1", new BigDecimal("5000"), "USD", "CP1", null, "WIRE", LocalDateTime.now().minusHours(24), "US", "INBOUND");
         
-        transactionRepository.save(inboundTx);
+        when(transactionRepository.findByAccountIdOrderByTimestampAsc("ACC1"))
+                .thenReturn(List.of(inboundTx, outboundTx));
 
         // Outbound (4000) is 80% of Inbound (5000), should trigger
         Optional<Alert> alert = rule.evaluate(outboundTx);
