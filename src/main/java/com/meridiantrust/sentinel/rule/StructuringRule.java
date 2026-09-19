@@ -39,7 +39,7 @@ public class StructuringRule implements DetectionRule {
                     .filter(t -> isWithinBounds(t.amount()))
                     .collect(Collectors.toList());
 
-            if (recentTransactions.size() >= STRUCTURING_COUNT_THRESHOLD) {
+            if (recentTransactions.size() > 0 && recentTransactions.size() % STRUCTURING_COUNT_THRESHOLD == 0) {
                 Alert alert = new Alert(
                         UUID.randomUUID().toString(),
                         null,
