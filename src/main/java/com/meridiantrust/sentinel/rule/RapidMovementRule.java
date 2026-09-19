@@ -33,7 +33,7 @@ public class RapidMovementRule implements DetectionRule {
             LocalDateTime cutoff = transaction.timestamp().minusHours(48);
             
             // Find recent deposits (INBOUND)
-            List<Transaction> recentDeposits = transactionRepository.findByAccountId(transaction.accountId()).stream()
+            List<Transaction> recentDeposits = transactionRepository.findByAccountIdOrderByTimestampAsc(transaction.accountId()).stream()
                     .filter(t -> t.timestamp().isAfter(cutoff) && t.timestamp().isBefore(transaction.timestamp()))
                     .filter(t -> "INBOUND".equalsIgnoreCase(t.direction()))
                     .collect(Collectors.toList());
