@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Generate SAR Draft</title>
+    <th:block th:replace="~{base :: head('SAR Draft')}"></th:block>
+</head>
+<body>
+    <div th:replace="~{base :: navbar}"></div>
+
+    <div class="container sar-container">
+        <h2>Suspicious Activity Report Draft</h2>
+        <p class="page-desc">Review the automatically generated narrative for Alert <span th:text="${alertId}"></span> before regulatory filing.</p>
+        
+        <div class="card">
+            <div style="width: 100%; margin-bottom: 1rem;">
+                <textarea id="sarDraftText" class="sar-textarea" readonly th:text="${sarDraft}"></textarea>
+            </div>
+            <div style="display: flex; gap: 1rem;">
+                <button class="btn btn-primary" onclick="copyToClipboard()">Copy to Clipboard</button>
+                <a href="/alerts" class="btn btn-secondary">Back to Alerts</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function copyToClipboard() {
+            var copyText = document.getElementById("sarDraftText");
+            copyText.select();
+            copyText.setSelectionRange(0, 99999); /* For mobile devices */
+            navigator.clipboard.writeText(copyText.value).then(function() {
+                alert("Copied SAR draft to clipboard!");
+            }, function(err) {
+                console.error('Could not copy text: ', err);
+            });
+        }
+    </script>
+</body>
+</html>

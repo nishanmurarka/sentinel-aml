@@ -4,88 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title th:text="${title}">Sentinel AML</title>
-    <!-- Modern stylish fonts and simplistic styling for "wow" factor -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-color: #f4f6f9;
-            --text-color: #16303D;
-            --card-bg: #ffffff;
-            --border-color: #e2e8f0;
-            --primary: #00c269;
-            --navbar-bg: #16303D;
-            --navbar-text: #ffffff;
-            --danger: #ef4444;
-            --warning: #f59e0b;
-        }
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 0;
-        }
-        .navbar {
-            background-color: var(--navbar-bg);
-            padding: 1rem 2rem;
-            border-bottom: 1px solid var(--navbar-bg);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .navbar a {
-            color: var(--navbar-text);
-            text-decoration: none;
-            margin-right: 1.5rem;
-            font-weight: 600;
-        }
-        .navbar a:hover {
-            color: var(--primary);
-        }
-        .container {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 1rem;
-        }
-        .card {
-            background-color: var(--card-bg);
-            border-radius: 8px;
-            padding: 1.5rem;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 1rem;
-        }
-        th, td {
-            padding: 1rem;
-            text-align: left;
-            border-bottom: 1px solid var(--border-color);
-        }
-        th {
-            font-weight: 600;
-            color: #94a3b8;
-        }
-        .badge-danger {
-            background-color: rgba(239, 68, 68, 0.2);
-            color: var(--danger);
-            padding: 0.25rem 0.5rem;
-            border-radius: 9999px;
-            font-size: 0.875rem;
-            font-weight: 600;
-        }
-        .badge-warning {
-            background-color: rgba(245, 158, 11, 0.2);
-            color: var(--warning);
-            padding: 0.25rem 0.5rem;
-            border-radius: 9999px;
-            font-size: 0.875rem;
-            font-weight: 600;
-        }
-        h1, h2, h3 { margin-top: 0; }
-    </style>
+    <!-- Premium CSS Theme -->
+    <link href="/css/styles.css" rel="stylesheet">
 </head>
 <body>
     <div th:fragment="navbar" class="navbar">
@@ -97,6 +17,7 @@
             <a href="/">Dashboard</a>
             <a href="/customers">Customers</a>
             <a href="/accounts">Accounts</a>
+            <a href="/network">Network Graph</a>
             <a href="/alerts">All Alerts</a>
         </div>
     </div>

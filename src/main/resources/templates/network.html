@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Network Graph</title>
+    <th:block th:replace="~{base :: head('Network Visualization')}"></th:block>
+    <!-- Include Vis.js -->
+    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <style>
+        #mynetwork {
+            width: 100%;
+            height: 700px;
+            border: 1px solid var(--border-color);
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .header-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div th:replace="~{base :: navbar}"></div>
+
+    <div class="container">
+        <div class="header-section">
+            <h2>Account Transaction Network</h2>
+            <button onclick="fetchNetworkData()" class="btn btn-primary">Refresh Graph</button>
+        </div>
+        <p class="page-desc">Visualizing transaction flows between accounts to detect layering or shell companies.</p>
+        <div id="mynetwork"></div>
+    </div>
+
+    <script type="text/javascript">
+        let network = null;
+
+        function fetchNetworkData() {
+            fetch('/api/v1/network/data')
+                .then(response => response.json())
+                .then(data => {
+                    drawNetwork(data.nodes, data.edges);
+                })
+                .catch(error => {
+                    console.error('Error fetching network data:', error);
+                    alert('Failed to load network data.');
+                });
+        }
+
+        function drawNetwork(nodesData, edgesData) {
+            const container = document.getElementById('mynetwork');
+            
+            // Format nodes for Vis.js
+            const nodes = new vis.DataSet(nodesData.map(node => ({
+                id: node.id,
+                label: node.label,
+                group: node.group,
+                shape: 'dot',
+                size: 20,
+                font: { size: 14, color: '#f8fafc' }
+            })));
+
+            // Format edges for Vis.js
+            const edges = new vis.DataSet(edgesData.map(edge => ({
+                from: edge.from,
+                to: edge.to,
+                label: edge.label,
+                arrows: 'to',
+                font: { align: 'middle', size: 10, color: '#94a3b8' },
+                color: { color: '#475569', highlight: '#00c269' },
+                width: 2
+            })));
+
+            const data = { nodes: nodes, edges: edges };
+            
+            const options = {
+                nodes: {
+                    color: {
+                        background: 'rgba(255,255,255,0.1)',
+                        border: '#94a3b8',
+                        highlight: { background: '#00c269', border: '#00c269' }
+                    }
+                },
+                physics: {
+                    stabilization: true,
+                    barnesHut: {
+                        gravitationalConstant: -2000,
+                        springConstant: 0.04,
+                        springLength: 95
+                    }
+                },
+                interaction: {
+                    hover: true,
+                    tooltipDelay: 200
+                }
+            };
+
+            if (network !== null) {
+                network.destroy();
+                network = null;
+            }
+
+            network = new vis.Network(container, data, options);
+        }
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', fetchNetworkData);
+    </script>
+</body>
+</html>

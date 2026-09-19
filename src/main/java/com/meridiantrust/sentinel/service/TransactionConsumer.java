@@ -7,12 +7,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
+import java.util.concurrent.ConcurrentHashMap;
+
 @Service
 public class TransactionConsumer {
 
     private static final Logger log = LoggerFactory.getLogger(TransactionConsumer.class);
     private final TransactionRepository transactionRepository;
     private final RuleEngineService ruleEngineService;
+    private final ConcurrentHashMap<String, Object> accountLocks = new ConcurrentHashMap<>();
 
     public TransactionConsumer(TransactionRepository transactionRepository, RuleEngineService ruleEngineService) {
         this.transactionRepository = transactionRepository;
@@ -23,10 +26,13 @@ public class TransactionConsumer {
     public void consume(Transaction transaction) {
         log.info("Consumed transaction: {}", transaction.id());
         
-        // Save to in-memory store
-        transactionRepository.save(transaction);
-        
-        // Evaluate rules
-        ruleEngineService.evaluate(transaction);
+        Object lock = accountLocks.computeIfAbsent(transaction.accountId(), k -> new Object());
+        synchronized (lock) {
+            // Save to in-memory store
+            transactionRepository.save(transaction);
+            
+            // Evaluate rules
+            ruleEngineService.evaluate(transaction);
+        }
     }
 }
