@@ -6,7 +6,7 @@
     
     <div class="container">
         <h1>Customers</h1>
-        <p style="color: #94a3b8; margin-bottom: 2rem;">Showing all registered customers.</p>
+        <p class="page-desc">Showing all registered customers.</p>
         
         <div class="card">
             <div th:if="${#lists.isEmpty(customers)}">No customers found.</div>
@@ -24,8 +24,7 @@
                         <td th:text="${customer.id()}">ID</td>
                         <td th:text="${customer.name()}">Name</td>
                         <td>
-                            <span th:class="${customer.riskRating() == 'HIGH' ? 'badge-danger' : (customer.riskRating() == 'MEDIUM' ? 'badge-warning' : '')}"
-                                  th:style="${customer.riskRating() == 'LOW' ? 'background-color: rgba(16, 185, 129, 0.2); color: #10b981; padding: 0.25rem 0.5rem; border-radius: 9999px; font-size: 0.875rem; font-weight: 600;' : ''}"
+                            <span th:class="${customer.riskRating() == 'HIGH' ? 'badge-danger' : (customer.riskRating() == 'MEDIUM' ? 'badge-warning' : 'badge-success')}"
                                   th:text="${customer.riskRating()}">Rating</span>
                         </td>
                         <td th:text="${customer.kycStatus()}">Status</td>

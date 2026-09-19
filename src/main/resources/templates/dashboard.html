@@ -8,35 +8,35 @@
         <h1 style="margin-bottom: 2rem;">Overview</h1>
 
         <!-- Flash messages -->
-        <div th:if="${message}" style="background-color: rgba(16, 185, 129, 0.2); color: #10b981; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem;" th:text="${message}"></div>
-        <div th:if="${error}" style="background-color: rgba(239, 68, 68, 0.2); color: #ef4444; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem;" th:text="${error}"></div>
+        <div th:if="${message}" class="alert-success" th:text="${message}"></div>
+        <div th:if="${error}" class="alert-error" th:text="${error}"></div>
         
-        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-bottom: 2rem;">
+        <div class="metrics-grid">
             <div class="card">
-                <div style="color: #94a3b8; font-size: 0.875rem;">Total Alerts</div>
-                <div style="font-size: 2rem; font-weight: 700; margin-top: 0.5rem;" th:text="${totalAlerts}">0</div>
+                <div class="metric-title">Total Alerts</div>
+                <div class="metric-value" th:text="${totalAlerts}">0</div>
             </div>
             <div class="card" style="border-left: 4px solid var(--danger);">
-                <div style="color: #94a3b8; font-size: 0.875rem;">High Risk Alerts</div>
-                <div style="font-size: 2rem; font-weight: 700; margin-top: 0.5rem; color: var(--danger);" th:text="${highRiskAlerts}">0</div>
+                <div class="metric-title">High Risk Alerts</div>
+                <div class="metric-value metric-danger" th:text="${highRiskAlerts}">0</div>
             </div>
             <div class="card">
-                <div style="color: #94a3b8; font-size: 0.875rem;">Transactions Processed</div>
-                <div style="font-size: 2rem; font-weight: 700; margin-top: 0.5rem;" th:text="${totalTransactions}">0</div>
+                <div class="metric-title">Transactions Processed</div>
+                <div class="metric-value" th:text="${totalTransactions}">0</div>
             </div>
             <div class="card">
-                <div style="color: #94a3b8; font-size: 0.875rem;">Monitored Customers</div>
-                <div style="font-size: 2rem; font-weight: 700; margin-top: 0.5rem;" th:text="${totalCustomers}">0</div>
+                <div class="metric-title">Monitored Customers</div>
+                <div class="metric-value" th:text="${totalCustomers}">0</div>
             </div>
         </div>
 
         <!-- Upload CSV Form -->
         <div class="card" style="margin-bottom: 2rem;">
             <h2>Upload Transactions</h2>
-            <p style="color: #94a3b8; margin-bottom: 1rem; font-size: 0.875rem;">Upload a CSV file of transactions to simulate real-time ingestion.</p>
+            <p class="page-desc">Upload a CSV file of transactions to simulate real-time ingestion.</p>
             <form method="POST" action="/upload-transactions" enctype="multipart/form-data" style="display: flex; gap: 1rem; align-items: center;">
-                <input type="file" name="file" accept=".csv" required style="padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 4px; background: var(--card-bg); color: var(--text-color);">
-                <button type="submit" style="background-color: var(--primary); color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; font-weight: 600; cursor: pointer;">Upload & Stream</button>
+                <input type="file" name="file" accept=".csv" required>
+                <button type="submit" class="btn btn-primary">Upload & Stream</button>
             </form>
         </div>
 

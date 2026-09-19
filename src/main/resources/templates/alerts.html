@@ -6,7 +6,7 @@
     
     <div class="container">
         <h1>All Alerts</h1>
-        <p style="color: #94a3b8; margin-bottom: 2rem;">Showing all generated alerts, sorted by risk score descending.</p>
+        <p class="page-desc">Showing all generated alerts, sorted by risk score descending.</p>
         
         <div class="card">
             <div th:if="${#lists.isEmpty(alerts)}">No alerts found.</div>
@@ -36,7 +36,7 @@
                         <td th:text="${alert.description}">Description</td>
                         <td th:text="${alert.status}">Status</td>
                         <td>
-                            <a th:href="@{/alerts/{id}/sar(id=${alert.id})}" style="color: var(--primary); font-weight: 600; text-decoration: none;">Draft SAR</a>
+                            <a th:href="@{/alerts/{id}/sar(id=${alert.id})}" class="link-primary">Draft SAR</a>
                         </td>
                     </tr>
                 </tbody>
